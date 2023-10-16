@@ -3,8 +3,7 @@ import { UserRepository } from './user.repository'
 
 @Controller('/users')
 export class UserController {
-  private userRepository = new UserRepository()
-
+  constructor(private userRepository: UserRepository) {}
   @Post()
   async createUser(@Body() userData) {
     this.userRepository.save(userData)
