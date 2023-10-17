@@ -18,6 +18,10 @@ export class CreateProductDTO {
   @IsNotEmpty({ message: 'O campo nome é obrigatório.' })
   nome: string
 
+  @IsString({ message: 'usuarioId precisa ser uma string.' })
+  @IsNotEmpty({ message: 'O campo usuarioId é obrigatório.' })
+  usuarioId: string
+
   @IsNumber()
   @IsPositive()
   @IsDecimal({ decimal_digits: '2' })
