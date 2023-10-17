@@ -5,6 +5,12 @@ import { UserEntity } from './user.entity'
 export class UserRepository {
   private users: UserEntity[] = []
 
+  private async getUserById(id: string) {
+    const possibleUser = this.users.find((user) => user.id === id)
+
+    if (!possibleUser) throw new Error('Usuário não encontrado!')
+    return possibleUser
+  }
   async save(user: UserEntity) {
     this.users.push(user)
     console.log(this.users)
@@ -15,18 +21,22 @@ export class UserRepository {
   }
 
   async update(id: string, newData: Partial<UserEntity>) {
-    const possibleUser = this.users.find((user) => user.id === id)
-
-    if (!possibleUser) throw new Error('Usuário não encontrado!')
+    const user = await this.getUserById(id)
 
     Object.entries(newData).forEach(([key, value]) => {
       if (key === 'id') {
         return
       }
 
-      possibleUser[key] = value
+      user[key] = value
     })
-    return possibleUser
+    return user
+  }
+
+  async delete(id: string) {
+    const user = await this.getUserById(id)
+    this.users = this.users.filter((savedUser) => savedUser.id !== id)
+    return user
   }
 
   async emailAlreadyExists(email: string) {
