@@ -14,6 +14,21 @@ export class UserRepository {
     return this.users
   }
 
+  async update(id: string, newData: Partial<UserEntity>) {
+    const possibleUser = this.users.find((user) => user.id === id)
+
+    if (!possibleUser) throw new Error('Usuário não encontrado!')
+
+    Object.entries(newData).forEach(([key, value]) => {
+      if (key === 'id') {
+        return
+      }
+
+      possibleUser[key] = value
+    })
+    return possibleUser
+  }
+
   async emailAlreadyExists(email: string) {
     const possibleUser = this.users.find((user) => user.email === email)
 
