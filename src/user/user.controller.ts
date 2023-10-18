@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { UserRepository } from './user.repository'
 import { UserEntity } from './user.entity'
-import { CreateUserDTO } from './dto/CreateUser.dto'
+import { CreateUserDTO } from './dto/createUser.dto'
 import { UpdateUserDTO } from './dto/UpdateUser.dto'
 import { ListUserDTO } from './dto/ListUser.dto'
 
