@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid'
-import { ProductFeatureEntity } from './ProductFeature.entity'
+import { ProductFeatureEntity } from './productFeature.entity'
 import { ProductImageEntity } from './productImage.entity'
 
 export class ProductEntity {
