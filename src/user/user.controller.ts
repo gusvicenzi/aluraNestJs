@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { UserRepository } from './user.repository'
-import { CreateUserDTO } from './dto/CreateUser.dto'
 import { UserEntity } from './user.entity'
-import { ListProductDTO } from 'src/product/dto/ListProduct.dto'
-import { UpdateUserDTO } from './dto/updateUser.dto'
+import { CreateUserDTO } from './dto/CreateUser.dto'
+import { UpdateUserDTO } from './dto/UpdateUser.dto'
+import { ListUserDTO } from './dto/ListUser.dto'
 
 @Controller('/users')
 export class UserController {
@@ -19,7 +19,7 @@ export class UserController {
     this.userRepository.save(userEntity)
     return {
       message: 'Usuário criado!',
-      user: new ListProductDTO(userEntity.id, userEntity.nome)
+      user: new ListUserDTO(userEntity.id, userEntity.nome)
     }
   }
 
@@ -27,7 +27,7 @@ export class UserController {
   async listUsers() {
     const usersList = await this.userRepository.list()
 
-    return usersList.map((user) => new ListProductDTO(user.id, user.nome))
+    return usersList.map((user) => new ListUserDTO(user.id, user.nome))
   }
 
   @Put('/:id')
@@ -38,7 +38,7 @@ export class UserController {
     const updatedUser = await this.userRepository.update(id, userDataToUpdate)
     return {
       message: 'Usuário atualizado!',
-      user: new ListProductDTO(updatedUser.id, updatedUser.nome)
+      user: new ListUserDTO(updatedUser.id, updatedUser.nome)
     }
   }
 
