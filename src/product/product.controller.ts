@@ -19,8 +19,8 @@ export class ProductController {
       productData.imagens,
       productData.categoria
     )
-    this.productRepository.save(productEntity)
-    return { message: 'Produto criado!', product: productEntity }
+    const createdProduct = this.productRepository.save(productEntity)
+    return { message: 'Produto criado!', product: createdProduct }
   }
 
   @Get()
@@ -31,11 +31,11 @@ export class ProductController {
   @Put('/:id')
   async updateUser(
     @Param('id') id: string,
-    @Body() userDataToUpdate: UpdateProductDTO
+    @Body() productDataToUpdate: UpdateProductDTO
   ) {
     const updatedProduct = await this.productRepository.update(
       id,
-      userDataToUpdate
+      productDataToUpdate
     )
     return {
       message: 'Producto atualizado!',

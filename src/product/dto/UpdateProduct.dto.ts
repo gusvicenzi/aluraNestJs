@@ -1,30 +1,40 @@
 import {
+  ArrayMinSize,
   IsArray,
-  IsDecimal,
   IsInt,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsPositive,
   IsString,
+  IsUUID,
   MaxLength,
-  MinLength
+  Min,
+  ValidateNested
 } from 'class-validator'
 import { ProductFeatureDTO } from './ProductFeature.dto'
 import { ProductImageDTO } from './ProductImage.dto'
 import { Type } from 'class-transformer'
 
 export class UpdateProductDTO {
+  @IsUUID('4', { message: 'ID do produto é inválido' })
+  id: string
+
+  @IsUUID('4', { message: 'ID do usuário é inválido' })
+  usuarioId: string
+
   @IsString({ message: 'Nome precisa ser uma string.' })
+  @IsNotEmpty({ message: 'Nome do produto não pode ser vazio' })
   @IsOptional()
   nome: string
 
-  @IsNumber()
+  @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
   @IsPositive()
-  @IsDecimal({ decimal_digits: '2' })
+  @Min(1, { message: 'O valor precisa ser maior que zero' })
   valor: number
 
   @IsNumber()
-  @IsPositive()
+  @Min(1, { message: 'O valor precisa ser maior que zero' })
   @IsInt()
   quantidade: number
 
@@ -35,16 +45,19 @@ export class UpdateProductDTO {
   @IsOptional()
   descricao: string
 
+  @ValidateNested()
   @IsArray()
+  @ArrayMinSize(3, { message: 'São necessárias ao menos 3 características.' })
   @Type(() => ProductFeatureDTO)
-  @MinLength(3, { message: 'São necessárias ao menos 3 características.' })
   caracteristicas: ProductFeatureDTO[]
 
+  @ValidateNested()
   @IsArray()
-  @Type(() => ProductFeatureDTO)
-  @MinLength(1, { message: 'É necessário ao menos 1 imagem.' })
+  @ArrayMinSize(1, { message: 'É necessário ao menos 1 imagem.' })
+  @Type(() => ProductImageDTO)
   imagens: ProductImageDTO[]
 
-  @IsOptional()
+  @IsString()
+  @IsNotEmpty({ message: 'O campo categoria é obrigatório.' })
   categoria: string
 }

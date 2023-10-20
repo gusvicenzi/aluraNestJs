@@ -20,8 +20,10 @@ export class ProductRepository {
   async update(id: string, newData: Partial<ProductEntity>) {
     const product = await this.getProductById(id)
 
+    const notUpdatableData = ['id', 'usuarioId']
+
     Object.entries(newData).forEach(([key, value]) => {
-      if (key === 'id' || key === 'usuarioId') {
+      if (notUpdatableData.includes(key)) {
         return
       }
 
@@ -36,10 +38,10 @@ export class ProductRepository {
   }
 
   async delete(id: string) {
-    const user = await this.getProductById(id)
+    const product = await this.getProductById(id)
     this.products = this.products.filter(
       (savedProduct) => savedProduct.id !== id
     )
-    return user
+    return product
   }
 }
