@@ -15,9 +15,9 @@ export class ProductController {
       productData.valor,
       productData.quantidade,
       productData.descricao,
-      productData.caracteristicas,
-      productData.imagens,
       productData.categoria
+      // productData.caracteristicas,
+      // productData.imagens
     )
     const createdProduct = this.productRepository.save(productEntity)
     return { message: 'Produto criado!', product: createdProduct }
