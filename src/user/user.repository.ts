@@ -11,6 +11,7 @@ export class UserRepository {
     if (!possibleUser) throw new Error('Usuário não encontrado!')
     return possibleUser
   }
+
   async save(user: UserEntity) {
     this.users.push(user)
     console.log(this.users)

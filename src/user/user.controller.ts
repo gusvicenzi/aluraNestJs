@@ -8,6 +8,7 @@ import { ListUserDTO } from './dto/ListUser.dto'
 @Controller('/users')
 export class UserController {
   constructor(private userRepository: UserRepository) {}
+
   @Post()
   async createUser(@Body() userData: CreateUserDTO) {
     const userEntity = new UserEntity(

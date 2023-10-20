@@ -4,6 +4,7 @@ import { ProductImageEntity } from './productImage.entity'
 
 export class ProductEntity {
   id: string
+  usuarioId: string
   nome: string
   valor: number
   quantidade: number
@@ -14,6 +15,7 @@ export class ProductEntity {
 
   constructor(
     nome: string,
+    usuarioId: string,
     valor: number,
     quantidade: number,
     descricao: string,
@@ -22,6 +24,7 @@ export class ProductEntity {
     categoria: string
   ) {
     this.id = uuid()
+    this.usuarioId = usuarioId
     this.nome = nome
     this.valor = valor
     this.quantidade = quantidade
