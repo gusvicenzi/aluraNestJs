@@ -1,12 +1,16 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'product_features' })
 export class ProductFeatureEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string
+
   @Column({
     length: 100,
     nullable: false
   })
   nome: string
+
   @Column({
     length: 255,
     nullable: false
