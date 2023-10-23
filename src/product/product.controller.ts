@@ -1,12 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { ProductRepository } from './product.repository'
 import { CreateProductDTO } from './dto/CreateProduct.dto'
 import { ProductEntity } from './entity/product.entity'
 import { UpdateProductDTO } from './dto/UpdateProduct.dto'
+import { ProductService } from './product.service'
+import { ListProductoDTO } from './dto/ListProduct.dto'
 
 @Controller('/products')
 export class ProductController {
-  constructor(private productRepository: ProductRepository) {}
+  constructor(private productService: ProductService) {}
   @Post()
   async createProduct(@Body() productData: CreateProductDTO) {
     const productEntity = new ProductEntity(
@@ -19,13 +20,17 @@ export class ProductController {
       // productData.caracteristicas,
       // productData.imagens
     )
-    const createdProduct = this.productRepository.save(productEntity)
-    return { message: 'Produto criado!', product: createdProduct }
+    const createdProduct =
+      await this.productService.createProduct(productEntity)
+    return {
+      message: 'Produto criado!',
+      product: new ListProductoDTO(createdProduct)
+    }
   }
 
   @Get()
   async listProducts() {
-    return this.productRepository.list()
+    return this.productService.listProducts()
   }
 
   @Put('/:id')
@@ -33,21 +38,21 @@ export class ProductController {
     @Param('id') id: string,
     @Body() productDataToUpdate: UpdateProductDTO
   ) {
-    const updatedProduct = await this.productRepository.update(
+    const updatedProduct = await this.productService.updateProduct(
       id,
       productDataToUpdate
     )
     return {
-      message: 'Producto atualizado!',
+      message: 'Produto atualizado!',
       product: updatedProduct
     }
   }
 
   @Delete('/:id')
   async deleteUser(@Param('id') id: string) {
-    const deletedProduct = await this.productRepository.delete(id)
+    const deletedProduct = await this.productService.deleteProduct(id)
     return {
-      message: 'Producto removido com sucesso!',
+      message: 'Produto removido com sucesso!',
       product: deletedProduct
     }
   }

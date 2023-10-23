@@ -31,11 +31,13 @@ export class UpdateProductDTO {
   @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
   @IsPositive()
   @Min(1, { message: 'O valor precisa ser maior que zero' })
+  @IsOptional()
   valor: number
 
   @IsNumber()
   @Min(1, { message: 'O valor precisa ser maior que zero' })
   @IsInt()
+  @IsOptional()
   quantidade: number
 
   @IsString({ message: 'Descricao precisa ser uma string.' })
@@ -45,19 +47,22 @@ export class UpdateProductDTO {
   @IsOptional()
   descricao: string
 
+  @IsString()
+  @IsNotEmpty({ message: 'O campo categoria é obrigatório.' })
+  @IsOptional()
+  categoria: string
+
   @ValidateNested()
   @IsArray()
   @ArrayMinSize(3, { message: 'São necessárias ao menos 3 características.' })
   @Type(() => ProductFeatureDTO)
+  @IsOptional()
   caracteristicas: ProductFeatureDTO[]
 
   @ValidateNested()
   @IsArray()
   @ArrayMinSize(1, { message: 'É necessário ao menos 1 imagem.' })
   @Type(() => ProductImageDTO)
+  @IsOptional()
   imagens: ProductImageDTO[]
-
-  @IsString()
-  @IsNotEmpty({ message: 'O campo categoria é obrigatório.' })
-  categoria: string
 }

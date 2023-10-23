@@ -13,7 +13,8 @@ export class UserService {
   ) {}
 
   async createUser(userEntity: UserEntity) {
-    await this.userRepository.save(userEntity)
+    const createdUser = await this.userRepository.save(userEntity)
+    return createdUser
   }
 
   async listUsers() {
@@ -27,7 +28,7 @@ export class UserService {
   }
 
   async updateUser(id: string, userEntity: UpdateUserDTO) {
-    await this.userRepository.update(id, userEntity)
+    return await this.userRepository.update(id, userEntity)
   }
 
   async deleteUser(id: string) {
