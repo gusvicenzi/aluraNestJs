@@ -16,9 +16,9 @@ export class ProductController {
       productData.valor,
       productData.quantidade,
       productData.descricao,
-      productData.categoria
-      // productData.caracteristicas,
-      // productData.imagens
+      productData.categoria,
+      productData.caracteristicas,
+      productData.imagens
     )
     const createdProduct =
       await this.productService.createProduct(productEntity)

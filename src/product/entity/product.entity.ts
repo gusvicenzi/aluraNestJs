@@ -1,12 +1,13 @@
 import { v4 as uuid } from 'uuid'
-// import { ProductFeatureEntity } from './productFeature.entity'
-// import { ProductImageEntity } from './productImage.entity'
+import { ProductFeatureEntity } from './productFeature.entity'
+import { ProductImageEntity } from './productImage.entity'
 
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
@@ -54,12 +55,22 @@ export class ProductEntity {
   // @Column({
   //   nullable: false
   // })
-  // caracteristicas: ProductFeatureEntity[]
+  @OneToMany(
+    () => ProductFeatureEntity,
+    (productFeatureEntity) => productFeatureEntity.product,
+    { cascade: true, eager: true }
+  )
+  caracteristicas: ProductFeatureEntity[]
 
   // @Column({
   //   nullable: false
   // })
-  // imagens: ProductImageEntity[]
+  @OneToMany(
+    () => ProductImageEntity,
+    (productImageEntity) => productImageEntity.product,
+    { cascade: true, eager: true }
+  )
+  imagens: ProductImageEntity[]
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string
@@ -76,9 +87,9 @@ export class ProductEntity {
     valor: number,
     quantidade: number,
     descricao: string,
-    categoria: string
-    // caracteristicas: ProductFeatureEntity[],
-    // imagens: ProductImageEntity[],
+    categoria: string,
+    caracteristicas: ProductFeatureEntity[],
+    imagens: ProductImageEntity[]
   ) {
     this.id = uuid()
     this.usuarioId = usuarioId
@@ -86,8 +97,8 @@ export class ProductEntity {
     this.valor = valor
     this.quantidade = quantidade
     this.descricao = descricao
-    // this.caracteristicas = caracteristicas
-    // this.imagens = imagens
+    this.caracteristicas = caracteristicas
+    this.imagens = imagens
     this.categoria = categoria
   }
 }

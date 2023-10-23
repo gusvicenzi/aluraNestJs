@@ -41,15 +41,15 @@ export class CreateProductDTO {
   @IsNotEmpty({ message: 'O campo categoria é obrigatório.' })
   categoria: string
 
-  // @ValidateNested()
-  // @IsArray()
-  // @ArrayMinSize(3, { message: 'São necessárias ao menos 3 características.' })
-  // @Type(() => ProductFeatureDTO)
-  // caracteristicas: ProductFeatureDTO[]
+  @ValidateNested()
+  @IsArray()
+  @ArrayMinSize(3, { message: 'São necessárias ao menos 3 características.' })
+  @Type(() => ProductFeatureDTO)
+  caracteristicas: ProductFeatureDTO[]
 
-  // @ValidateNested()
-  // @IsArray()
-  // @ArrayMinSize(1, { message: 'É necessário ao menos 1 imagem.' })
-  // @Type(() => ProductImageDTO)
-  // imagens: ProductImageDTO[]
+  @ValidateNested()
+  @IsArray()
+  @ArrayMinSize(1, { message: 'É necessário ao menos 1 imagem.' })
+  @Type(() => ProductImageDTO)
+  imagens: ProductImageDTO[]
 }
