@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator'
-import { ProductEntity } from '../entity/product.entity'
+import { ProductEntity } from '../entities/product.entity'
 
 export class ProductImageDTO {
   id: string

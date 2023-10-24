@@ -1,4 +1,4 @@
-import { ProductEntity } from '../entity/product.entity'
+import { ProductEntity } from '../entities/product.entity'
 
 class ListFeatureProductDTO {
   nome: string
