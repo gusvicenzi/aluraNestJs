@@ -18,13 +18,6 @@ export class ProductEntity {
   id: string
 
   @Column({
-    name: 'usuario_id',
-    length: 100,
-    nullable: false
-  })
-  usuarioId: string
-
-  @Column({
     length: 100,
     nullable: false
   })
@@ -84,7 +77,6 @@ export class ProductEntity {
 
   constructor(
     nome: string,
-    usuarioId: string,
     valor: number,
     quantidade_disponivel: number,
     descricao: string,
@@ -93,7 +85,6 @@ export class ProductEntity {
     imagens: ProductImageEntity[]
   ) {
     this.id = uuid()
-    this.usuarioId = usuarioId
     this.nome = nome
     this.valor = valor
     this.quantidadeDisponivel = quantidade_disponivel

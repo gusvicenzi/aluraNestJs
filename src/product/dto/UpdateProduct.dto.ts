@@ -20,9 +20,6 @@ export class UpdateProductDTO {
   @IsUUID('4', { message: 'ID do produto é inválido' })
   id: string
 
-  @IsUUID('4', { message: 'ID do usuário é inválido' })
-  usuarioId: string
-
   @IsString({ message: 'Nome precisa ser uma string.' })
   @IsNotEmpty({ message: 'Nome do produto não pode ser vazio' })
   @IsOptional()

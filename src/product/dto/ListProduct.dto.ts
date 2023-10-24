@@ -23,7 +23,6 @@ export class ListProductoDTO {
 
   constructor(productEntity: ProductEntity) {
     this.id = productEntity.id
-    this.usuarioId = productEntity.usuarioId
     this.nome = productEntity.nome
     this.valor = productEntity.valor
     this.quantidadeDisponivel = productEntity.quantidadeDisponivel

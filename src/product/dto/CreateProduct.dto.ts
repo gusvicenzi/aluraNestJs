@@ -4,7 +4,6 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
-  IsUUID,
   MaxLength,
   Min,
   ValidateNested
@@ -14,10 +13,6 @@ import { ProductImageDTO } from './ProductImage.dto'
 import { Type } from 'class-transformer'
 
 export class CreateProductDTO {
-  @IsString({ message: 'usuarioId precisa ser uma string.' })
-  @IsUUID(undefined, { message: 'ID de usuário inválido' })
-  usuarioId: string
-
   @IsString({ message: 'Nome precisa ser uma string.' })
   @IsNotEmpty({ message: 'O campo nome é obrigatório.' })
   nome: string

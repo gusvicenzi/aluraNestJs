@@ -16,7 +16,6 @@ export class ProductService {
   async createProduct(productData: CreateProductDTO) {
     const productEntity = new ProductEntity(
       productData.nome,
-      productData.usuarioId,
       productData.valor,
       productData.quantidadeDisponivel,
       productData.descricao,
