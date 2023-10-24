@@ -4,6 +4,7 @@ import { Repository } from 'typeorm'
 import { ProductEntity } from './entity/product.entity'
 import { ListProductoDTO } from './dto/ListProduct.dto'
 import { UpdateProductDTO } from './dto/UpdateProduct.dto'
+import { CreateProductDTO } from './dto/CreateProduct.dto'
 
 @Injectable()
 export class ProductService {
@@ -12,7 +13,17 @@ export class ProductService {
     private readonly productRepository: Repository<ProductEntity>
   ) {}
 
-  async createProduct(productEntity: ProductEntity) {
+  async createProduct(productData: CreateProductDTO) {
+    const productEntity = new ProductEntity(
+      productData.nome,
+      productData.usuarioId,
+      productData.valor,
+      productData.quantidadeDisponivel,
+      productData.descricao,
+      productData.categoria,
+      productData.caracteristicas,
+      productData.imagens
+    )
     const createdProduct = await this.productRepository.save(productEntity)
     return createdProduct
   }

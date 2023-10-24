@@ -15,7 +15,7 @@ export class ListProductoDTO {
   readonly usuarioId: string
   readonly nome: string
   readonly valor: number
-  readonly quantidade: number
+  readonly quantidadeDisponivel: number
   readonly descricao: string
   readonly categoria: string
   readonly caracteristicas: ListFeatureProductDTO[]
@@ -26,7 +26,7 @@ export class ListProductoDTO {
     this.usuarioId = productEntity.usuarioId
     this.nome = productEntity.nome
     this.valor = productEntity.valor
-    this.quantidade = productEntity.quantidade
+    this.quantidadeDisponivel = productEntity.quantidadeDisponivel
     this.descricao = productEntity.descricao
     this.categoria = productEntity.categoria
   }

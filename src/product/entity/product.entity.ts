@@ -36,9 +36,10 @@ export class ProductEntity {
   valor: number
 
   @Column({
+    name: 'quantidade_disponivel',
     nullable: false
   })
-  quantidade: number
+  quantidadeDisponivel: number
 
   @Column({
     length: 255,
@@ -85,7 +86,7 @@ export class ProductEntity {
     nome: string,
     usuarioId: string,
     valor: number,
-    quantidade: number,
+    quantidade_disponivel: number,
     descricao: string,
     categoria: string,
     caracteristicas: ProductFeatureEntity[],
@@ -95,7 +96,7 @@ export class ProductEntity {
     this.usuarioId = usuarioId
     this.nome = nome
     this.valor = valor
-    this.quantidade = quantidade
+    this.quantidadeDisponivel = quantidade_disponivel
     this.descricao = descricao
     this.caracteristicas = caracteristicas
     this.imagens = imagens

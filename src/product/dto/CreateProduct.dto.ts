@@ -27,8 +27,10 @@ export class CreateProductDTO {
   valor: number
 
   @IsNumber()
-  @Min(0, { message: 'Quantidade mínima inválida' })
-  quantidade: number
+  @Min(0, {
+    message: 'Quantidade mínima inválida'
+  })
+  quantidadeDisponivel: number
 
   @IsString({ message: 'Descricao precisa ser uma string.' })
   @IsNotEmpty({ message: 'O campo descricao é obrigatório.' })

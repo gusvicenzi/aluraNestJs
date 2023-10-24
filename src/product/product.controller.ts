@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { CreateProductDTO } from './dto/CreateProduct.dto'
-import { ProductEntity } from './entity/product.entity'
 import { UpdateProductDTO } from './dto/UpdateProduct.dto'
 import { ProductService } from './product.service'
 import { ListProductoDTO } from './dto/ListProduct.dto'
@@ -10,18 +9,7 @@ export class ProductController {
   constructor(private productService: ProductService) {}
   @Post()
   async createProduct(@Body() productData: CreateProductDTO) {
-    const productEntity = new ProductEntity(
-      productData.nome,
-      productData.usuarioId,
-      productData.valor,
-      productData.quantidade,
-      productData.descricao,
-      productData.categoria,
-      productData.caracteristicas,
-      productData.imagens
-    )
-    const createdProduct =
-      await this.productService.createProduct(productEntity)
+    const createdProduct = await this.productService.createProduct(productData)
     return {
       message: 'Produto criado!',
       product: new ListProductoDTO(createdProduct)

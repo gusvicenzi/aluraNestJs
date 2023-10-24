@@ -38,7 +38,7 @@ export class UpdateProductDTO {
   @Min(1, { message: 'O valor precisa ser maior que zero' })
   @IsInt()
   @IsOptional()
-  quantidade: number
+  quantidadeDisponivel: number
 
   @IsString({ message: 'Descricao precisa ser uma string.' })
   @MaxLength(1000, {

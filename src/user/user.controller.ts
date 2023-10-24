@@ -1,5 +1,4 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { UserEntity } from './user.entity'
 import { CreateUserDTO } from './dto/CreateUser.dto'
 import { UpdateUserDTO } from './dto/UpdateUser.dto'
 import { ListUserDTO } from './dto/ListUser.dto'
@@ -11,13 +10,7 @@ export class UserController {
 
   @Post()
   async createUser(@Body() userData: CreateUserDTO) {
-    const userEntity = new UserEntity(
-      userData.nome,
-      userData.email,
-      userData.senha
-    )
-
-    const createdUser = await this.userService.createUser(userEntity)
+    const createdUser = await this.userService.createUser(userData)
     return {
       message: 'Usuário criado!',
       user: new ListUserDTO(createdUser.id, createdUser.nome)
