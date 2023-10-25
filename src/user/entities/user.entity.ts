@@ -1,12 +1,13 @@
+import { PedidoEntity } from '../../pedido/entities/pedido.entity'
 import {
   Entity,
   Column,
   CreateDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  DeleteDateColumn
+  DeleteDateColumn,
+  OneToMany
 } from 'typeorm'
-import { v4 as uuid } from 'uuid'
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -40,8 +41,10 @@ export class UserEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: string
 
+  @OneToMany(() => PedidoEntity, (pedido) => pedido.usuario)
+  pedidos: PedidoEntity[]
+
   constructor(nome: string, email: string, senha: string) {
-    this.id = uuid()
     this.nome = nome
     this.email = email
     this.senha = senha
