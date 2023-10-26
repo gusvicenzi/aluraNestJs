@@ -3,6 +3,10 @@ import { PedidoEntity } from './pedido.entity'
 
 @Entity({ name: 'itens_pedido' })
 export class ItemPedidoEntity {
+  constructor(precoVenda: number, quantidade: number) {
+    this.precoVenda = precoVenda
+    this.quantidade = quantidade
+  }
   @PrimaryGeneratedColumn('uuid')
   id: string
 

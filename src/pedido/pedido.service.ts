@@ -4,6 +4,8 @@ import { PedidoEntity } from './entities/pedido.entity'
 import { Repository } from 'typeorm'
 import { UserEntity } from '../user/entities/user.entity'
 import { StatusPedido } from './enum/statuspedido.enum'
+import { CreatePedidoDTO } from './dto/CreatePedido.dto'
+import { ItemPedidoEntity } from './entities/itempedido.entity'
 
 @Injectable()
 export class PedidoService {
@@ -14,12 +16,23 @@ export class PedidoService {
     private readonly userRepository: Repository<UserEntity>
   ) {}
 
-  async createPedido(usuarioId: string) {
+  async createPedido(usuarioId: string, dadosDoPedido: CreatePedidoDTO) {
     const user = await this.userRepository.findOneBy({ id: usuarioId })
+
+    const itensPedidoEntidades = dadosDoPedido.itensPedido.map(
+      (itemPedido) => new ItemPedidoEntity(10, itemPedido.quantidade)
+    )
+
+    const valorTotal = itensPedidoEntidades.reduce(
+      (total, item) => total + item.precoVenda * item.quantidade,
+      0
+    )
+
     const pedidoEntity = new PedidoEntity(
-      0,
+      valorTotal,
       StatusPedido.EM_PROCESSAMENTO,
-      user
+      user,
+      itensPedidoEntidades
     )
 
     const pedidoCriado = await this.pedidoRepository.save(pedidoEntity)

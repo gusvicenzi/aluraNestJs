@@ -46,9 +46,15 @@ export class PedidoEntity {
   })
   itensPedido: ItemPedidoEntity[]
 
-  constructor(valorTotal: number, status: StatusPedido, usuario: UserEntity) {
+  constructor(
+    valorTotal: number,
+    status: StatusPedido,
+    usuario: UserEntity,
+    itensPedido: ItemPedidoEntity[]
+  ) {
     this.valorTotal = valorTotal
     this.status = status
     this.usuario = usuario
+    this.itensPedido = itensPedido
   }
 }
