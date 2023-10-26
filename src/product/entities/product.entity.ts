@@ -11,9 +11,29 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
+import { ItemPedidoEntity } from '../../pedido/entities/itempedido.entity'
 
 @Entity({ name: 'products' })
 export class ProductEntity {
+  constructor(
+    nome: string,
+    valor: number,
+    quantidade_disponivel: number,
+    descricao: string,
+    categoria: string,
+    caracteristicas: ProductFeatureEntity[],
+    imagens: ProductImageEntity[]
+  ) {
+    this.id = uuid()
+    this.nome = nome
+    this.valor = valor
+    this.quantidadeDisponivel = quantidade_disponivel
+    this.descricao = descricao
+    this.caracteristicas = caracteristicas
+    this.imagens = imagens
+    this.categoria = categoria
+  }
+
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -46,9 +66,6 @@ export class ProductEntity {
   })
   categoria: string
 
-  // @Column({
-  //   nullable: false
-  // })
   @OneToMany(
     () => ProductFeatureEntity,
     (productFeatureEntity) => productFeatureEntity.product,
@@ -56,15 +73,15 @@ export class ProductEntity {
   )
   caracteristicas: ProductFeatureEntity[]
 
-  // @Column({
-  //   nullable: false
-  // })
   @OneToMany(
     () => ProductImageEntity,
     (productImageEntity) => productImageEntity.product,
     { cascade: true, eager: true }
   )
   imagens: ProductImageEntity[]
+
+  @OneToMany(() => ItemPedidoEntity, (itemPedido) => itemPedido.produto)
+  itensPedido: ItemPedidoEntity[]
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string
@@ -74,23 +91,4 @@ export class ProductEntity {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: string
-
-  constructor(
-    nome: string,
-    valor: number,
-    quantidade_disponivel: number,
-    descricao: string,
-    categoria: string,
-    caracteristicas: ProductFeatureEntity[],
-    imagens: ProductImageEntity[]
-  ) {
-    this.id = uuid()
-    this.nome = nome
-    this.valor = valor
-    this.quantidadeDisponivel = quantidade_disponivel
-    this.descricao = descricao
-    this.caracteristicas = caracteristicas
-    this.imagens = imagens
-    this.categoria = categoria
-  }
 }
