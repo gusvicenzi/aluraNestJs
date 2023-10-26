@@ -36,11 +36,12 @@ export class PedidoEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: string
 
-  @ManyToOne(() => UserEntity, (user) => user.pedidos)
+  @ManyToOne(() => UserEntity, (user) => user.pedidos, { eager: true })
   usuario: UserEntity
 
-  constructor(valorTotal: number, status: StatusPedido) {
+  constructor(valorTotal: number, status: StatusPedido, usuario: UserEntity) {
     this.valorTotal = valorTotal
     this.status = status
+    this.usuario = usuario
   }
 }
