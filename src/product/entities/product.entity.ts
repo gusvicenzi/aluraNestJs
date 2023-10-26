@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid'
 import { ProductFeatureEntity } from './productFeature.entity'
 import { ProductImageEntity } from './productImage.entity'
 
@@ -24,7 +23,6 @@ export class ProductEntity {
     caracteristicas: ProductFeatureEntity[],
     imagens: ProductImageEntity[]
   ) {
-    this.id = uuid()
     this.nome = nome
     this.valor = valor
     this.quantidadeDisponivel = quantidade_disponivel

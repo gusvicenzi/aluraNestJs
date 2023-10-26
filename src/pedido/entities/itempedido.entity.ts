@@ -4,9 +4,10 @@ import { ProductEntity } from '../../product/entities/product.entity'
 
 @Entity({ name: 'itens_pedido' })
 export class ItemPedidoEntity {
-  constructor(precoVenda: number, quantidade: number) {
+  constructor(precoVenda: number, quantidade: number, produto: ProductEntity) {
     this.precoVenda = precoVenda
     this.quantidade = quantidade
+    this.produto = produto
   }
   @PrimaryGeneratedColumn('uuid')
   id: string

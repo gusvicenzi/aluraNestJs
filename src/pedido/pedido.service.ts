@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { PedidoEntity } from './entities/pedido.entity'
-import { Repository } from 'typeorm'
+import { In, Repository } from 'typeorm'
 import { UserEntity } from '../user/entities/user.entity'
 import { StatusPedido } from './enum/statuspedido.enum'
 import { CreatePedidoDTO } from './dto/CreatePedido.dto'
 import { ItemPedidoEntity } from './entities/itempedido.entity'
+import { ProductEntity } from '../product/entities/product.entity'
 
 @Injectable()
 export class PedidoService {
@@ -13,15 +14,32 @@ export class PedidoService {
     @InjectRepository(PedidoEntity)
     private readonly pedidoRepository: Repository<PedidoEntity>,
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>
+    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(ProductEntity)
+    private readonly produtoRepository: Repository<ProductEntity>
   ) {}
 
   async createPedido(usuarioId: string, dadosDoPedido: CreatePedidoDTO) {
-    const user = await this.userRepository.findOneBy({ id: usuarioId })
+    const usuario = await this.userRepository.findOneBy({ id: usuarioId })
+    const produtosIds = dadosDoPedido.itensPedido.map((item) => item.produtoId)
 
-    const itensPedidoEntidades = dadosDoPedido.itensPedido.map(
-      (itemPedido) => new ItemPedidoEntity(10, itemPedido.quantidade)
-    )
+    const produtosRelacionados = await this.produtoRepository.findBy({
+      id: In(produtosIds)
+    })
+    const itensPedidoEntidades = dadosDoPedido.itensPedido.map((itemPedido) => {
+      const produtoRelacionado = produtosRelacionados.find(
+        (produto) => produto.id === itemPedido.produtoId
+      )
+      const itemPedidoEntity = new ItemPedidoEntity(
+        produtoRelacionado.valor,
+        itemPedido.quantidade,
+        produtoRelacionado
+      )
+
+      itemPedidoEntity.produto.quantidadeDisponivel -= itemPedido.quantidade
+
+      return itemPedidoEntity
+    })
 
     const valorTotal = itensPedidoEntidades.reduce(
       (total, item) => total + item.precoVenda * item.quantidade,
@@ -31,7 +49,7 @@ export class PedidoService {
     const pedidoEntity = new PedidoEntity(
       valorTotal,
       StatusPedido.EM_PROCESSAMENTO,
-      user,
+      usuario,
       itensPedidoEntidades
     )
 
