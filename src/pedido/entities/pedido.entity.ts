@@ -5,10 +5,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  ManyToOne
+  ManyToOne,
+  OneToMany
 } from 'typeorm'
 import { StatusPedido } from '../enum/statuspedido.enum'
 import { UserEntity } from '../../user/entities/user.entity'
+import { ItemPedidoEntity } from './itempedido.entity'
 
 @Entity({ name: 'pedidos' })
 export class PedidoEntity {
@@ -38,6 +40,11 @@ export class PedidoEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.pedidos, { eager: true })
   usuario: UserEntity
+
+  @OneToMany(() => ItemPedidoEntity, (itemPedido) => itemPedido.pedido, {
+    cascade: true
+  })
+  itensPedido: ItemPedidoEntity[]
 
   constructor(valorTotal: number, status: StatusPedido, usuario: UserEntity) {
     this.valorTotal = valorTotal
