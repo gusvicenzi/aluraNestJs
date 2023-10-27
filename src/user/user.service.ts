@@ -33,6 +33,13 @@ export class UserService {
     return usersList
   }
 
+  async searchForEmail(email: string) {
+    const checkEmail = await this.userRepository.findOne({
+      where: { email }
+    })
+    return checkEmail
+  }
+
   async updateUser(id: string, userEntity: UpdateUserDTO) {
     return await this.userRepository.update(id, userEntity)
   }
