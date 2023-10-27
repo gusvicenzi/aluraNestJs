@@ -28,14 +28,11 @@ export class PedidoService {
     return usuario
   }
 
-  async createPedido(usuarioId: string, dadosDoPedido: CreatePedidoDTO) {
-    const usuario = await this.buscaUsuario(usuarioId)
-    const produtosIds = dadosDoPedido.itensPedido.map((item) => item.produtoId)
-
-    const produtosRelacionados = await this.produtoRepository.findBy({
-      id: In(produtosIds)
-    })
-    const itensPedidoEntidades = dadosDoPedido.itensPedido.map((itemPedido) => {
+  private trataDadosPedido(
+    dadosDoPedido: CreatePedidoDTO,
+    produtosRelacionados: ProductEntity[]
+  ) {
+    dadosDoPedido.itensPedido.forEach((itemPedido) => {
       const produtoRelacionado = produtosRelacionados.find(
         (produto) => produto.id === itemPedido.produtoId
       )
@@ -45,10 +42,32 @@ export class PedidoService {
           `Produto com id ${itemPedido.produtoId} não encontrado`
         )
 
+      if (itemPedido.quantidade > produtoRelacionado.quantidadeDisponivel)
+        throw new NotFoundException(
+          `A quantidade solicitada (${itemPedido.quantidade}) é maior do que a disponível (${produtoRelacionado.quantidadeDisponivel}) para o produto ${produtoRelacionado.nome}`
+        )
+    })
+  }
+
+  async createPedido(usuarioId: string, dadosDoPedido: CreatePedidoDTO) {
+    const usuario = await this.buscaUsuario(usuarioId)
+    const produtosIds = dadosDoPedido.itensPedido.map((item) => item.produtoId)
+
+    const produtosRelacionados = await this.produtoRepository.findBy({
+      id: In(produtosIds)
+    })
+
+    this.trataDadosPedido(dadosDoPedido, produtosRelacionados)
+
+    const itensPedidoEntidades = dadosDoPedido.itensPedido.map((itemPedido) => {
+      const produtoRelacionado = produtosRelacionados.find(
+        (produto) => produto.id === itemPedido.produtoId
+      )
+
       const itemPedidoEntity = new ItemPedidoEntity(
-        produtoRelacionado.valor,
+        produtoRelacionado!.valor,
         itemPedido.quantidade,
-        produtoRelacionado
+        produtoRelacionado!
       )
 
       itemPedidoEntity.produto.quantidadeDisponivel -= itemPedido.quantidade
