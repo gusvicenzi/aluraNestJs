@@ -13,7 +13,7 @@ export class UserController {
     const createdUser = await this.userService.createUser(userData)
     return {
       message: 'Usuário criado!',
-      user: new ListUserDTO(createdUser.id, createdUser.nome)
+      user: new ListUserDTO({ id: createdUser.id, nome: createdUser.nome })
     }
   }
 
@@ -32,7 +32,7 @@ export class UserController {
     await this.userService.updateUser(id, userDataToUpdate)
     return {
       message: 'Usuário atualizado!',
-      user: new ListUserDTO(id, userDataToUpdate.nome)
+      user: new ListUserDTO({ id, nome: userDataToUpdate.nome })
     }
   }
 

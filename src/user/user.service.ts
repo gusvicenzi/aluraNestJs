@@ -27,7 +27,7 @@ export class UserService {
     const savedUsers = await this.userRepository.find()
 
     const usersList = savedUsers.map(
-      (user) => new ListUserDTO(user.id, user.nome)
+      (user) => new ListUserDTO({ id: user.id, nome: user.nome })
     )
 
     return usersList

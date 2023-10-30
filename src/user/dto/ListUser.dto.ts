@@ -9,8 +9,8 @@ export class ListUserDTO {
   //   this.nome = userEntity.nome
   // }
 
-  constructor(id: string, nome: string) {
-    this.id = id
-    this.nome = nome
+  constructor({ id, nome }: { id?: string; nome?: string }) {
+    if (id) this.id = id
+    if (nome) this.nome = nome
   }
 }
