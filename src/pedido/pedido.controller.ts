@@ -1,9 +1,20 @@
-import { Body, Controller, Get, Patch, Post, Query } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query
+  // UseFilters
+} from '@nestjs/common'
 import { PedidoService } from './pedido.service'
 import { CreatePedidoDTO } from './dto/CreatePedido.dto'
 import { UpdatePedidoDTO } from './dto/UpdatePedido.dto'
+// import { ExceptionFilterHttp } from 'src/filters/exceptionFilterHttp'
 
 @Controller('pedidos')
+// @UseFilters(ExceptionFilterHttp)
 export class PedidoController {
   constructor(private readonly pedidoService: PedidoService) {}
 
@@ -20,9 +31,17 @@ export class PedidoController {
     return this.pedidoService.findPedidosDoUsuario(usuarioId)
   }
 
-  @Patch()
+  @Get(':pedidoId')
+  getPedido(
+    @Param('pedidoId') pedidoId: string,
+    @Query('usuarioId') usuarioId: string
+  ) {
+    return this.pedidoService.getPedido(pedidoId, usuarioId)
+  }
+
+  @Patch(':pedidoId')
   updatePedido(
-    @Query('pedidoId') pedidoId: string,
+    @Param('pedidoId') pedidoId: string,
     @Body() dadosDeAtualizacaoPedido: UpdatePedidoDTO
   ) {
     return this.pedidoService.updatePedido(pedidoId, dadosDeAtualizacaoPedido)

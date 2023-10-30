@@ -104,6 +104,17 @@ export class PedidoService {
     return pedidos
   }
 
+  async getPedido(pedidoId: string, usuarioId: string) {
+    const pedido = await this.pedidoRepository.findOne({
+      where: {
+        usuario: { id: usuarioId },
+        id: pedidoId
+      }
+    })
+
+    return pedido
+  }
+
   async updatePedido(pedidoId: string, newData: UpdatePedidoDTO) {
     const pedido = await this.pedidoRepository.findOneBy({ id: pedidoId })
 
@@ -111,6 +122,6 @@ export class PedidoService {
 
     Object.assign(pedido, newData)
 
-    return this.produtoRepository.save(pedido)
+    return this.pedidoRepository.save(pedido)
   }
 }
