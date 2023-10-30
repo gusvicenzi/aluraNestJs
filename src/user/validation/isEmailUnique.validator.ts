@@ -5,7 +5,7 @@ import {
   ValidatorConstraintInterface,
   registerDecorator
 } from 'class-validator'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { UserService } from '../user.service'
 
 @Injectable()
@@ -16,8 +16,14 @@ export class IsEmailUniqueValidator implements ValidatorConstraintInterface {
     value: any
     /*,validationArguments?: ValidationArguments*/
   ): Promise<boolean> {
-    const userAlreadyExists = await this.userService.searchForEmail(value)
-    return !userAlreadyExists
+    try {
+      const userAlreadyExists = await this.userService.searchForEmail(value)
+      return !userAlreadyExists
+    } catch (error) {
+      if (error instanceof NotFoundException) return true
+
+      throw error
+    }
   }
 }
 
