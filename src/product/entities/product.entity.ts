@@ -14,24 +14,6 @@ import { ItemPedidoEntity } from '../../pedido/entities/itempedido.entity'
 
 @Entity({ name: 'products' })
 export class ProductEntity {
-  constructor(
-    nome: string,
-    valor: number,
-    quantidade_disponivel: number,
-    descricao: string,
-    categoria: string,
-    caracteristicas: ProductFeatureEntity[],
-    imagens: ProductImageEntity[]
-  ) {
-    this.nome = nome
-    this.valor = valor
-    this.quantidadeDisponivel = quantidade_disponivel
-    this.descricao = descricao
-    this.caracteristicas = caracteristicas
-    this.imagens = imagens
-    this.categoria = categoria
-  }
-
   @PrimaryGeneratedColumn('uuid')
   id: string
 

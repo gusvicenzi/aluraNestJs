@@ -14,15 +14,9 @@ export class ProductService {
   ) {}
 
   async createProduct(productData: CreateProductDTO) {
-    const productEntity = new ProductEntity(
-      productData.nome,
-      productData.valor,
-      productData.quantidadeDisponivel,
-      productData.descricao,
-      productData.categoria,
-      productData.caracteristicas,
-      productData.imagens
-    )
+    const productEntity = new ProductEntity()
+
+    Object.assign(productEntity, productData as ProductEntity)
     const createdProduct = await this.productRepository.save(productEntity)
     return createdProduct
   }
@@ -43,7 +37,7 @@ export class ProductService {
     if (entityName === null)
       throw new NotFoundException('Produto não encontrado')
 
-    Object.assign(entityName, newData)
+    Object.assign(entityName, newData as ProductEntity)
 
     return this.productRepository.save(entityName)
   }
