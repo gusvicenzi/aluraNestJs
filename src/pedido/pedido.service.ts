@@ -92,6 +92,8 @@ export class PedidoService {
   }
 
   async findPedidosDoUsuario(usuarioId: string) {
+    await this.buscaUsuario(usuarioId)
+
     const pedidos = await this.pedidoRepository.find({
       where: {
         usuario: { id: usuarioId }
@@ -105,6 +107,7 @@ export class PedidoService {
   }
 
   async getPedido(pedidoId: string, usuarioId: string) {
+    await this.buscaUsuario(usuarioId)
     const pedido = await this.pedidoRepository.findOne({
       where: {
         usuario: { id: usuarioId },
