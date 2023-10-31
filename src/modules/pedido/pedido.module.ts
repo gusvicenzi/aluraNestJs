@@ -4,7 +4,7 @@ import { PedidoController } from './pedido.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserEntity } from '../user/entities/user.entity'
 import { PedidoEntity } from './entities/pedido.entity'
-import { ProductEntity } from 'src/product/entities/product.entity'
+import { ProductEntity } from '../product/entities/product.entity'
 
 @Module({
   imports: [

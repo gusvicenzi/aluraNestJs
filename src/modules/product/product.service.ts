@@ -21,6 +21,12 @@ export class ProductService {
     return createdProduct
   }
 
+  async getProduct(id: string) {
+    const savedProduct = await this.productRepository.findBy({ id })
+
+    return savedProduct
+  }
+
   async listProducts() {
     const savedProducts = await this.productRepository.find()
 

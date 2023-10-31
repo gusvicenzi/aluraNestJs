@@ -21,6 +21,11 @@ export class ProductController {
     return this.productService.listProducts()
   }
 
+  @Get(':productId')
+  async getProduct(@Param('productId') productId: string) {
+    return this.productService.getProduct(productId)
+  }
+
   @Put('/:id')
   async updateUser(
     @Param('id') id: string,
