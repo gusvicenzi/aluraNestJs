@@ -27,6 +27,7 @@ export class ProductController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   async listProducts() {
     return this.productService.listProducts()
   }
