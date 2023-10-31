@@ -22,8 +22,9 @@ export class ProductService {
   }
 
   async getProduct(id: string) {
-    const savedProduct = await this.productRepository.findBy({ id })
+    const savedProduct = await this.productRepository.findOneBy({ id })
 
+    if (!savedProduct) throw new NotFoundException('Produto não encontrado')
     return savedProduct
   }
 

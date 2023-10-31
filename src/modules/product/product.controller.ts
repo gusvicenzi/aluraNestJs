@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
@@ -12,11 +13,16 @@ import { CreateProductDTO } from './dto/CreateProduct.dto'
 import { UpdateProductDTO } from './dto/UpdateProduct.dto'
 import { ProductService } from './product.service'
 import { ListProductoDTO } from './dto/ListProduct.dto'
-import { CacheInterceptor } from '@nestjs/cache-manager'
+import { CacheInterceptor, CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Cache } from 'cache-manager'
+import { ProductEntity } from './entities/product.entity'
 
 @Controller('/products')
 export class ProductController {
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    @Inject(CACHE_MANAGER) private gerenciadorDeCache: Cache
+  ) {}
   @Post()
   async createProduct(@Body() productData: CreateProductDTO) {
     const createdProduct = await this.productService.createProduct(productData)
@@ -33,9 +39,23 @@ export class ProductController {
   }
 
   @Get('/:id')
-  @UseInterceptors(CacheInterceptor)
+  // @UseInterceptors(CacheInterceptor)
   async getProduct(@Param('id') id: string) {
-    return this.productService.getProduct(id)
+    let produto = await this.gerenciadorDeCache.get<ProductEntity>(
+      `product-${id}`
+    )
+
+    if (!produto) {
+      console.log('Obtendo produto do banco de dados')
+      produto = await this.productService.getProduct(id)
+
+      await this.gerenciadorDeCache.set(`product-${id}`, produto)
+    }
+
+    return {
+      message: 'Produto obtido com sucesso.',
+      product: produto
+    }
   }
 
   @Put('/:id')
