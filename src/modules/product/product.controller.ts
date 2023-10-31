@@ -1,8 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseInterceptors
+} from '@nestjs/common'
 import { CreateProductDTO } from './dto/CreateProduct.dto'
 import { UpdateProductDTO } from './dto/UpdateProduct.dto'
 import { ProductService } from './product.service'
 import { ListProductoDTO } from './dto/ListProduct.dto'
+import { CacheInterceptor } from '@nestjs/cache-manager'
 
 @Controller('/products')
 export class ProductController {
@@ -21,13 +31,14 @@ export class ProductController {
     return this.productService.listProducts()
   }
 
-  @Get(':productId')
-  async getProduct(@Param('productId') productId: string) {
-    return this.productService.getProduct(productId)
+  @Get('/:id')
+  @UseInterceptors(CacheInterceptor)
+  async getProduct(@Param('id') id: string) {
+    return this.productService.getProduct(id)
   }
 
   @Put('/:id')
-  async updateUser(
+  async updateProduct(
     @Param('id') id: string,
     @Body() productDataToUpdate: UpdateProductDTO
   ) {
@@ -42,7 +53,7 @@ export class ProductController {
   }
 
   @Delete('/:id')
-  async deleteUser(@Param('id') id: string) {
+  async deleteProduct(@Param('id') id: string) {
     const deletedProduct = await this.productService.deleteProduct(id)
     return {
       message: 'Produto removido com sucesso!',

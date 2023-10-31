@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config'
 import { PedidoModule } from './modules/pedido/pedido.module'
 import { APP_FILTER } from '@nestjs/core'
 import { ExceptionFilterGlobal } from './resources/filters/exceptionFilterGlobal'
+import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { ExceptionFilterGlobal } from './resources/filters/exceptionFilterGlobal
     TypeOrmModule.forRootAsync({
       useClass: PostgresConfigService,
       inject: [PostgresConfigService]
-    })
+    }),
+    CacheModule.register({ isGlobal: true, ttl: 10000 })
   ],
   providers: [
     {
