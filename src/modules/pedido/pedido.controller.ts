@@ -5,14 +5,17 @@ import {
   Param,
   Patch,
   Post,
-  Query
+  Query,
+  UseGuards
   // UseFilters
 } from '@nestjs/common'
 import { PedidoService } from './pedido.service'
 import { CreatePedidoDTO } from './dto/CreatePedido.dto'
 import { UpdatePedidoDTO } from './dto/UpdatePedido.dto'
+import { AuthGuard } from '../auth/auth.guard'
 // import { ExceptionFilterHttp } from 'src/filters/exceptionFilterHttp'
 
+@UseGuards(AuthGuard)
 @Controller('pedidos')
 // @UseFilters(ExceptionFilterHttp)
 export class PedidoController {

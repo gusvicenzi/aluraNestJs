@@ -3,7 +3,7 @@ import { UserService } from '../user/user.service'
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt'
 
-interface UsuarioPayload {
+export interface UserPayload {
   sub: string
   nome: string
 }
@@ -24,7 +24,7 @@ export class AuthService {
     if (!usuarioFoiAutenticado)
       throw new UnauthorizedException('E-mail ou senha incorretos.')
 
-    const payload: UsuarioPayload = {
+    const payload: UserPayload = {
       sub: usuario.id,
       nome: usuario.nome
     }
