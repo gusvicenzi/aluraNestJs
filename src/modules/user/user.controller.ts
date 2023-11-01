@@ -3,14 +3,23 @@ import { CreateUserDTO } from './dto/CreateUser.dto'
 import { UpdateUserDTO } from './dto/UpdateUser.dto'
 import { ListUserDTO } from './dto/ListUser.dto'
 import { UserService } from './user.service'
+import { HashingPasswordPipe } from '../../resources/pipes/hashing-password.pipe'
 
 @Controller('/users')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Post()
-  async createUser(@Body() userData: CreateUserDTO) {
-    const createdUser = await this.userService.createUser(userData)
+  async createUser(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() { senha, ...userData }: CreateUserDTO,
+    @Body('senha', HashingPasswordPipe) hashedSenha: string
+  ) {
+    const createdUser = await this.userService.createUser({
+      ...userData,
+      senha: hashedSenha
+    })
+
     return {
       message: 'Usuário criado!',
       user: new ListUserDTO({ id: createdUser.id, nome: createdUser.nome })
