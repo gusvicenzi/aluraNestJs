@@ -36,9 +36,15 @@ export class UserController {
   @Put('/:id')
   async updateUser(
     @Param('id') id: string,
-    @Body() userDataToUpdate: UpdateUserDTO
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() { senha, ...userDataToUpdate }: UpdateUserDTO,
+    @Body('senha', HashingPasswordPipe) hashedSenha: string
   ) {
-    await this.userService.updateUser(id, userDataToUpdate)
+    await this.userService.updateUser(id, {
+      senha: hashedSenha,
+      ...userDataToUpdate
+    })
+
     return {
       message: 'Usuário atualizado!',
       user: new ListUserDTO({ id, nome: userDataToUpdate.nome })
