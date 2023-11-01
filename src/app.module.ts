@@ -9,6 +9,7 @@ import { APP_FILTER } from '@nestjs/core'
 import { ExceptionFilterGlobal } from './resources/filters/exceptionFilterGlobal'
 import { CacheModule } from '@nestjs/cache-manager'
 import { redisStore } from 'cache-manager-redis-yet'
+import { AuthModule } from './modules/auth/auth.module'
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { redisStore } from 'cache-manager-redis-yet'
         store: await redisStore({ ttl: 10 * 1000 })
       }),
       isGlobal: true
-    })
+    }),
+    AuthModule
   ],
   providers: [
     {
