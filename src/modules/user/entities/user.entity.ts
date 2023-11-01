@@ -10,11 +10,13 @@ import {
   OneToMany
 } from 'typeorm'
 
+// Exclude()
 @Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
+  // Expose()
   @Column({
     length: 100,
     nullable: false
