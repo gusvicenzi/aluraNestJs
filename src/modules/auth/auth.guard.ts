@@ -28,13 +28,11 @@ export class AuthGuard implements CanActivate {
         await this.jwtService.verifyAsync(access_token)
 
       request.usuario = payload
-      console.log(payload)
-
-      return false
     } catch (error) {
       console.error(error)
       throw new UnauthorizedException('JWT inválido')
     }
+    return true
   }
   private extractTokenFromHeader(request: Request): string | undefined {
     const [tipo, token] = request.headers.authorization?.split(' ') ?? []
