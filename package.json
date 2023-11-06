@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "nest:resourse": "nest g resource --no-spec",
     "nest:guard": "nest g guard modules/auth --no-spec",
+    "nest:interceptor": "nest g itc resources/interceptors/logger-global --no-spec",
     "docker": "docker-compose up -d",
     "typeorm": "typeorm-ts-node-esm -d src/db/data-source-cli.service.ts",
     "migration:show": "typeorm-ts-node-esm -d src/db/data-source-cli.service.ts migration:show",
