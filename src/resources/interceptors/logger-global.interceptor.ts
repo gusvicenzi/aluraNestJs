@@ -5,7 +5,7 @@ import {
   Injectable,
   NestInterceptor
 } from '@nestjs/common'
-import { Request } from 'express'
+import { Request, Response } from 'express'
 import { Observable, tap } from 'rxjs'
 import { RequestWithUser } from 'src/modules/auth/auth.guard'
 
@@ -17,6 +17,16 @@ export class LoggerGlobalInterceptor implements NestInterceptor {
     const httpContext = context.switchToHttp()
     const request = httpContext.getRequest<Request | RequestWithUser>()
 
+    const response = httpContext.getResponse<Response>()
+
+    const { path, method } = request
+
+    const { statusCode } = response
+
+    this.nativeLogger.log(`${method} ${path}`)
+
+    const timePreController = Date.now()
+
     return next.handle().pipe(
       tap(() => {
         if ('usuario' in request) {
@@ -24,6 +34,10 @@ export class LoggerGlobalInterceptor implements NestInterceptor {
             `Rota acessada pelo usuário ${request.usuario.sub}`
           )
         }
+        const routeExecutionTime = Date.now() - timePreController
+        this.nativeLogger.log(
+          `Resposta: status ${statusCode} - ${routeExecutionTime}ms`
+        )
       })
     )
   }
